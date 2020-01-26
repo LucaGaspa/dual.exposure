@@ -10,6 +10,7 @@ const { Header } = Layout
 const LOGO_HEIGHT = 180
 const LOGO_RATIO = 1.36
 const MIN_LOGO_HEIGHT = 50
+const MIN_LOGO_MARGIN_LEFT = 30
 
 const SECTION_MARGIN_TOP = 280
 const MIN_SECTION_MARGIN_TOP = 30
@@ -51,7 +52,7 @@ function _AppHeader(props) {
   function handleClick() {
     props.changeState(true)
 
-    setLogoMargin(SECTION_MARGIN_TOP)
+    setLogoMargin(MIN_LOGO_MARGIN_LEFT)
     setLogoHeight(MIN_LOGO_HEIGHT)
     setSectionMarginTop(MIN_SECTION_MARGIN_TOP)
 
@@ -91,7 +92,7 @@ function _AppHeader(props) {
       <div className="sections">
         <Link
           to="/studio"
-          className={"sections-link " + (isShrink ? "immediate" : "third")}
+          className={"sections-link " + (isShrink ? "first" : "third")}
           style={{
             // height: sectionLinkHeight,
             // width: sectionLinkHeight,
@@ -187,20 +188,16 @@ const AppHeader = styled(_AppHeader)`
         margin: 0 30px;
       }
 
-      .immediate {
+      .first {
         transition: margin-top 1000ms ease-out;
       }
 
-      .first {
-        transition: margin-top 1000ms ease-out 300ms;
-      }
-
       .second {
-        transition: margin-top 1000ms ease-out 350ms;
+        transition: margin-top 1000ms ease-out 100ms;
       }
 
       .third {
-        transition: margin-top 1000ms ease-out 400ms;
+        transition: margin-top 1000ms ease-out 200ms;
       }
     }
   }
