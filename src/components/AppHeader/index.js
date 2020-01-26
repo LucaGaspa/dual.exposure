@@ -165,8 +165,8 @@ const AppHeader = styled(_AppHeader)`
     }
 
     .logo-wait {
-      transition: margin-left 1000ms ease-out 300ms,
-        height ease-out 1000ms 300ms, width 1000ms ease-out 300ms;
+      transition: margin-left 1000ms ease-out 150ms,
+        height ease-out 1000ms 150ms, width 1000ms ease-out 150ms;
     }
 
     .sections {
