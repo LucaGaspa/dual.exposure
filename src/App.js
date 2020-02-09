@@ -1,14 +1,16 @@
 import React, { useState } from "react"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import { Layout } from "antd"
 import styled from "styled-components"
 
 import "./App.css"
-import PHOTOS from "./constants/"
 import AppHeader from "./components/AppHeader"
-import PhotoGrid from "./components/PhotoGrid"
+import Home from "./pages/Home"
+import Studio from "./pages/Studio"
+import Landscapes from "./pages/Landscapes"
+import Portraits from "./pages/Portraits"
 
-const { Header, Content } = Layout
+const { Content } = Layout
 
 function _App(props) {
   const [isShrink, setIsShrink] = useState(false)
@@ -53,40 +55,6 @@ function _App(props) {
   )
 }
 
-function Home() {
-  return (
-    <div className="home-container">
-      <h2>Dual Exposure Studio</h2>
-      <div>Contact Us</div>
-    </div>
-  )
-}
-
-function Portraits() {
-  console.log(PHOTOS)
-  return (
-    <div>
-      <PhotoGrid photos={PHOTOS} />
-    </div>
-  )
-}
-
-function Landscapes() {
-  return (
-    <div>
-      <PhotoGrid photos={PHOTOS} />
-    </div>
-  )
-}
-
-function Studio() {
-  return (
-    <div>
-      <PhotoGrid photos={PHOTOS} />
-    </div>
-  )
-}
-
 const App = styled(_App)`
    {
     min-width: 375px;
@@ -96,22 +64,13 @@ const App = styled(_App)`
     }
 
     .max-margin {
-      margin-top: 420px;
+      margin-top: 460px;
       transition: margin-top 1000ms ease-out;
     }
 
     .min-margin {
       margin-top: 170px;
       transition: margin-top 1000ms ease-out 200ms;
-    }
-
-    .home-container {
-      text-align: center;
-
-      h2 {
-        font-weight: 400;
-        font-size: 32pt;
-      }
     }
   }
 `

@@ -1,13 +1,13 @@
 import React, { useState, useLayoutEffect } from "react"
 import { Link } from "react-router-dom"
-import { Layout, Typography } from "antd"
+import { Layout } from "antd"
 import styled from "styled-components"
 
 import logo from "../../res/DE_Logo.png"
 
 const { Header } = Layout
 
-const LOGO_HEIGHT = 180
+const LOGO_HEIGHT = 150
 const LOGO_RATIO = 1.36
 const MIN_LOGO_HEIGHT = 50
 const MIN_LOGO_MARGIN_LEFT = 30
@@ -15,14 +15,16 @@ const MIN_LOGO_MARGIN_LEFT = 30
 const MAX_SECTION_CONTAINER_WIDTH = 600
 const MIN_SECTION_CONTAINER_WIDTH = 400
 
-const MAX_SECTION_BOX_HEIGHT = 400
+const MAX_SECTION_BOX_HEIGHT = 440
 const MIN_SECTION_BOX_HEIGHT = 150
 
 const SMALL_SCREEN = 480
-const MEDIUM_SCREEN = 675
+// const MEDIUM_SCREEN = 675
 
 const BACKGROUND_IMAGE = require("../../res/background.jpg")
 const BACKGROUND_LANDSCAPES = require("../../res/landscapes.svg")
+const BACKGROUND_STUDIO = require("../../res/studio.svg")
+const BACKGROUND_PORTRAITS = require("../../res/portraits.svg")
 
 function _AppHeader(props) {
   const [isShrink, setIsShrink] = useState(false)
@@ -102,7 +104,7 @@ function _AppHeader(props) {
             style={{ height: sectionBoxHeight }}
           >
             <div className="section-box-background"></div>
-            <div className="section-box-image"></div>
+            <div className="section-box-image studio"></div>
             <Link
               to="/studio"
               className={"sections-link"}
@@ -114,7 +116,7 @@ function _AppHeader(props) {
             style={{ height: sectionBoxHeight }}
           >
             <div className="section-box-background"></div>
-            <div className="section-box-image"></div>
+            <div className="section-box-image landscapes"></div>
             <Link
               to="/landscapes"
               className="sections-link"
@@ -126,7 +128,7 @@ function _AppHeader(props) {
             style={{ height: sectionBoxHeight }}
           >
             <div className="section-box-background"></div>
-            <div className="section-box-image"></div>
+            <div className="section-box-image portraits"></div>
             <Link
               to="/portraits"
               className={"sections-link"}
@@ -216,10 +218,21 @@ const AppHeader = styled(_AppHeader)`
           height: 110%;
           width: 110%;
 
-          background-image: url(${BACKGROUND_LANDSCAPES});
           background-size: cover;
           background-repeat: no-repeat;
           background-position: center bottom -2px;
+        }
+
+        .studio {
+          background-image: url(${BACKGROUND_STUDIO});
+        }
+
+        .landscapes {
+          background-image: url(${BACKGROUND_LANDSCAPES});
+        }
+
+        .portraits {
+          background-image: url(${BACKGROUND_PORTRAITS});
         }
       }
 

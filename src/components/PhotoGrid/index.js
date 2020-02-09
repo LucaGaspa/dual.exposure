@@ -20,7 +20,7 @@ function _PhotoGrid(props) {
   }
 
   return (
-    <div>
+    <div className={props.className}>
       <Gallery photos={photos} onClick={openLightbox} />
       <ModalGateway>
         {viewerIsOpen ? (
@@ -45,4 +45,4 @@ const PhotoGrid = styled(_PhotoGrid)`
   }
 `
 
-export default _PhotoGrid
+export default PhotoGrid
