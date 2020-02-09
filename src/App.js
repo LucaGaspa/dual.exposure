@@ -4,7 +4,9 @@ import { Layout } from "antd"
 import styled from "styled-components"
 
 import "./App.css"
+import PHOTOS from "./constants/"
 import AppHeader from "./components/AppHeader"
+import PhotoGrid from "./components/PhotoGrid"
 
 const { Header, Content } = Layout
 
@@ -53,22 +55,36 @@ function _App(props) {
 
 function Home() {
   return (
-    <div style={{ height: "1000px" }}>
-      <h2>Home</h2>
+    <div className="home-container">
+      <h2>Dual Exposure Studio</h2>
+      <div>Contact Us</div>
     </div>
   )
 }
 
 function Portraits() {
-  return <h2 style={{ height: "1000px" }}>Portraits</h2>
+  console.log(PHOTOS)
+  return (
+    <div>
+      <PhotoGrid photos={PHOTOS} />
+    </div>
+  )
 }
 
 function Landscapes() {
-  return <h2 style={{ height: "1000px" }}>Landscapes</h2>
+  return (
+    <div>
+      <PhotoGrid photos={PHOTOS} />
+    </div>
+  )
 }
 
 function Studio() {
-  return <h2 style={{ height: "1000px" }}>Studio</h2>
+  return (
+    <div>
+      <PhotoGrid photos={PHOTOS} />
+    </div>
+  )
 }
 
 const App = styled(_App)`
@@ -80,13 +96,22 @@ const App = styled(_App)`
     }
 
     .max-margin {
-      margin-top: 400px;
+      margin-top: 420px;
       transition: margin-top 1000ms ease-out;
     }
 
     .min-margin {
-      margin-top: 150px;
+      margin-top: 170px;
       transition: margin-top 1000ms ease-out 200ms;
+    }
+
+    .home-container {
+      text-align: center;
+
+      h2 {
+        font-weight: 400;
+        font-size: 32pt;
+      }
     }
   }
 `
