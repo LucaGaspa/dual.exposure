@@ -142,7 +142,9 @@ function _AppHeader(props) {
 const AppHeader = styled(_AppHeader)`
    {
     position: fixed;
+    top: 0;
     width: 100%;
+    background-color: #fff;
     zindex: 1;
 
     .logo {

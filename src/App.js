@@ -27,7 +27,9 @@ function _App(props) {
 
         <Layout>
           <AppHeader changeState={changeState} />
-          <Content>
+          <Content
+            className={"content " + (isShrink ? "min-margin" : "max-margin")}
+          >
             <Switch>
               <Route path="/portraits">
                 <Portraits />
@@ -72,6 +74,20 @@ function Studio() {
 const App = styled(_App)`
    {
     min-width: 375px;
+
+    .content {
+      height: 100%;
+    }
+
+    .max-margin {
+      margin-top: 400px;
+      transition: margin-top 1000ms ease-out;
+    }
+
+    .min-margin {
+      margin-top: 150px;
+      transition: margin-top 1000ms ease-out 200ms;
+    }
   }
 `
 export default App
