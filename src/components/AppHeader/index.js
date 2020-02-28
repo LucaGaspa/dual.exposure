@@ -7,6 +7,11 @@ import logo from "../../res/DE_Logo.png"
 
 const { Header } = Layout
 
+const BACKGROUND_IMAGE = require("../../res/background.jpg")
+const BACKGROUND_LANDSCAPES = require("../../res/landscapes.svg")
+const BACKGROUND_STUDIO = require("../../res/studio.svg")
+const BACKGROUND_PORTRAITS = require("../../res/portraits.svg")
+
 const LOGO_HEIGHT = 150
 const LOGO_RATIO = 1.36
 const MIN_LOGO_HEIGHT = 50
@@ -20,11 +25,6 @@ const MIN_SECTION_BOX_HEIGHT = 150
 
 const SMALL_SCREEN = 480
 // const MEDIUM_SCREEN = 675
-
-const BACKGROUND_IMAGE = require("../../res/background.jpg")
-const BACKGROUND_LANDSCAPES = require("../../res/landscapes.svg")
-const BACKGROUND_STUDIO = require("../../res/studio.svg")
-const BACKGROUND_PORTRAITS = require("../../res/portraits.svg")
 
 function _AppHeader(props) {
   const [isShrink, setIsShrink] = useState(false)
