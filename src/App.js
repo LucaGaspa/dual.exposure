@@ -9,6 +9,7 @@ import Home from "./pages/Home"
 import Studio from "./pages/Studio"
 import Landscapes from "./pages/Landscapes"
 import Portraits from "./pages/Portraits"
+import { TransitionGroup, CSSTransition } from "react-transition-group"
 
 const { Content } = Layout
 
@@ -34,20 +35,40 @@ function _App(props) {
           <Content
             className={"content " + (isShrink ? "min-margin" : "max-margin")}
           >
-            <Switch>
-              <Route path="/portraits">
-                <Portraits />
-              </Route>
-              <Route path="/landscapes">
-                <Landscapes />
-              </Route>
-              <Route path="/studio">
-                <Studio />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
+            <Route
+              render={({ location }) => (
+                <TransitionGroup>
+                  <CSSTransition
+                    key={location.key}
+                    timeout={300}
+                    classNames="fade"
+                  >
+                    <Switch location={location}>
+                      <Route path="/portraits">
+                        <div className="page">
+                          <Portraits />
+                        </div>
+                      </Route>
+                      <Route path="/landscapes">
+                        <div className="page">
+                          <Landscapes />
+                        </div>
+                      </Route>
+                      <Route path="/studio">
+                        <div className="page">
+                          <Studio />
+                        </div>
+                      </Route>
+                      <Route path="/">
+                        <div className="page">
+                          <Home />
+                        </div>
+                      </Route>
+                    </Switch>
+                  </CSSTransition>
+                </TransitionGroup>
+              )}
+            />
           </Content>
         </Layout>
       </Router>
@@ -60,6 +81,7 @@ const App = styled(_App)`
     min-width: 375px;
 
     .content {
+      position: relative;
       height: 100%;
     }
 
@@ -71,6 +93,34 @@ const App = styled(_App)`
     .min-margin {
       margin-top: 170px;
       transition: margin-top 1000ms ease-out 200ms;
+    }
+
+    .page {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    /* simple - enter transition 300ms, exit 150ms */
+    .fade-appear,
+    .fade-enter {
+      opacity: 0;
+      z-index: 1;
+    }
+    .fade-appear-active,
+    .fade-enter.fade-enter-active {
+      opacity: 1;
+      transition: opacity 300ms linear 150ms;
+    }
+
+    .fade-exit {
+      opacity: 1;
+    }
+
+    .fade-exit.fade-exit-active {
+      opacity: 0;
+      transition: opacity 150ms linear;
     }
   }
 `
