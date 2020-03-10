@@ -24,8 +24,10 @@ function _Home(props) {
               "form-container " + (isContactUsVisible ? "open" : "close")
             }
           >
-            <div className={"form"}>Email to:</div>
             <div className={"email"}>dual.exposure.studio@gmail.com</div>
+            <div className={"separator-email"}>
+              <div className={isContactUsVisible ? "show" : "hide"}></div>
+            </div>
           </div>
         </div>
       </div>
@@ -51,6 +53,8 @@ const Home = styled(_Home)`
 
       .contact-us {
         cursor: pointer;
+        margin-top: 3px;
+        font-weight: 500;
       }
 
       .separator {
@@ -60,7 +64,7 @@ const Home = styled(_Home)`
         height: 1px;
         margin-left: 20px;
         margin-bottom: 10px;
-        background-image: linear-gradient(to right, white, black);
+        background-image: linear-gradient(to right, white, #262626);
       }
 
       .hide {
@@ -83,7 +87,6 @@ const Home = styled(_Home)`
         position: absolute;
         left: 310px;
         top: 0;
-        background-color: #fff;
       }
 
       .open {
@@ -96,12 +99,31 @@ const Home = styled(_Home)`
         transition: width 400ms ease-in;
       }
 
-      .form {
-        min-width: 80px;
-      }
-
       .email {
         font-size: 18px;
+        font-weight: 500;
+      }
+
+      .separator-email {
+        display: inline-block;
+        align-self: center;
+        width: 290px;
+        height: 1px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        background-image: linear-gradient(to left, white, #262626);
+      }
+
+      .hide-sep-email {
+        height: 100%;
+        width: 100%;
+        background-color: #fff;
+      }
+
+      .show-sep-email {
+        height: 100%;
+        width: 290px;
+        background-color: #fff;
       }
     }
   }
