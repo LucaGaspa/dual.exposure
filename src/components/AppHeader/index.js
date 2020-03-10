@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react"
+import React, { useState, useEffect, useLayoutEffect } from "react"
 import { Link } from "react-router-dom"
 import { Layout } from "antd"
 import styled from "styled-components"
@@ -29,6 +29,7 @@ const SMALL_SCREEN = 480
 function _AppHeader(props) {
   const [isShrink, setIsShrink] = useState(false)
 
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight)
   const [innerWidth, setInnerWidth] = useState(window.innerWidth)
 
   const [logoHeight, setLogoHeight] = useState(
@@ -44,9 +45,22 @@ function _AppHeader(props) {
     MAX_SECTION_BOX_HEIGHT
   )
 
+  const [mousePosition, setMousePosition] = useState({ x: null, y: null })
+
+  const updateMousePosition = ev => {
+    setMousePosition({ x: ev.clientX, y: ev.clientY })
+  }
+
+  useEffect(() => {
+    window.addEventListener("mousemove", updateMousePosition)
+
+    return () => window.removeEventListener("mousemove", updateMousePosition)
+  }, [])
+
   useLayoutEffect(() => {
     function updateSize() {
       setInnerWidth(window.innerWidth)
+      setInnerHeight(window.innerHeight)
     }
     window.addEventListener("resize", updateSize)
   }, [])
@@ -103,7 +117,13 @@ function _AppHeader(props) {
             className={"section-box " + (isShrink ? "first" : "third")}
             style={{ height: sectionBoxHeight }}
           >
-            <div className="section-box-background"></div>
+            <div
+              className="section-box-background"
+              style={{
+                backgroundPositionX: (mousePosition.x * 25) / innerWidth,
+                backgroundPositionY: (mousePosition.y * 25) / innerHeight
+              }}
+            ></div>
             <div className="section-box-image studio"></div>
             <Link
               to="/studio"
@@ -115,7 +135,13 @@ function _AppHeader(props) {
             className="section-box second"
             style={{ height: sectionBoxHeight }}
           >
-            <div className="section-box-background"></div>
+            <div
+              className="section-box-background"
+              style={{
+                backgroundPositionX: (mousePosition.x * 25) / innerWidth,
+                backgroundPositionY: (mousePosition.y * 25) / innerHeight
+              }}
+            ></div>
             <div className="section-box-image landscapes"></div>
             <Link
               to="/landscapes"
@@ -127,7 +153,13 @@ function _AppHeader(props) {
             className={"section-box " + (isShrink ? "third" : "first")}
             style={{ height: sectionBoxHeight }}
           >
-            <div className="section-box-background"></div>
+            <div
+              className="section-box-background"
+              style={{
+                backgroundPositionX: (mousePosition.x * 20) / innerWidth,
+                backgroundPositionY: (mousePosition.y * 100) / innerHeight
+              }}
+            ></div>
             <div className="section-box-image portraits"></div>
             <Link
               to="/portraits"
@@ -180,6 +212,7 @@ const AppHeader = styled(_AppHeader)`
       display: flex;
       justify-content: center;
       width: 100%;
+      margin-left: 1px;
 
       z-index: 100;
 
@@ -208,7 +241,6 @@ const AppHeader = styled(_AppHeader)`
           background-image: url(${BACKGROUND_IMAGE});
           background-size: cover;
           background-repeat: no-repeat;
-          background-position: center center;
         }
 
         .section-box-image {

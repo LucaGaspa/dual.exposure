@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 
+import sign from "../../res/DE_Sign.svg"
+
 function _Home(props) {
   const [isContactUsVisible, setIsContactUsVisible] = useState(false)
 
@@ -11,7 +13,10 @@ function _Home(props) {
   return (
     <div className={props.className}>
       <div className="home-container">
-        <h2>Dual Exposure Studio</h2>
+        {/* <h2>Dual Exposure Studio</h2> */}
+        <div>
+          <img className="sign" src={sign} />
+        </div>
         <div className="contact-us-container">
           <div className="contact-us" onClick={onContactUs}>
             Contact Us
@@ -45,10 +50,16 @@ const Home = styled(_Home)`
         font-size: 32pt;
       }
 
+      .sign {
+        max-width: 650px;
+        align-selg: center;
+      }
+
       .contact-us-container {
         position: relative;
         display: inline-block;
         width: 500px;
+        margin-top: 20px;
       }
 
       .contact-us {
