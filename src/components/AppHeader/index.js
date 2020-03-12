@@ -176,11 +176,10 @@ const AppHeader = styled(_AppHeader)`
     position: fixed;
     top: 0;
     width: 100%;
-    zindex: 1;
+    background-color: #e6e6e6;
 
     .logo {
       position: absolute;
-      z-index: 100;
 
       margin-top: ${LOGO_MARGIN_TOP}px;
 
@@ -214,7 +213,6 @@ const AppHeader = styled(_AppHeader)`
     }
 
     .sections {
-      z-index: 1000;
       text-align: center;
 
       .first {

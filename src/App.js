@@ -29,9 +29,7 @@ function _App(props) {
       <Router>
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-
         <Layout>
-          <AppHeader changeState={changeState} />
           <Content
             className={"content " + (isShrink ? "min-margin" : "max-margin")}
           >
@@ -71,6 +69,7 @@ function _App(props) {
             />
           </Content>
         </Layout>
+        <AppHeader changeState={changeState} />
       </Router>
     </div>
   )
@@ -86,13 +85,13 @@ const App = styled(_App)`
     }
 
     .max-margin {
-      margin-top: 550px;
+      margin-top: 600px;
       transition: margin-top 1000ms ease-out;
     }
 
     .min-margin {
-      margin-top: 170px;
-      transition: margin-top 1000ms ease-out 200ms;
+      margin-top: 150px;
+      transition: margin-top 1000ms ease-out 300ms;
     }
 
     .page {
