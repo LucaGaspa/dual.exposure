@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 
+import emailIcon from "../../res/email-icon.svg"
+
 function _Home(props) {
   const [isContactUsVisible, setIsContactUsVisible] = useState(false)
 
@@ -24,6 +26,7 @@ function _Home(props) {
               "form-container " + (isContactUsVisible ? "open" : "close")
             }
           >
+            <img className="email-icon" src={emailIcon} />
             <div className={"email"}>dual.exposure.studio@gmail.com</div>
             <div className={"separator-email"}>
               <div className={isContactUsVisible ? "show" : "hide"}></div>
@@ -65,7 +68,7 @@ const Home = styled(_Home)`
         height: 1px;
         margin-left: 20px;
         margin-bottom: 10px;
-        background-image: linear-gradient(to right, #e6e6e6, #262626);
+        background-image: linear-gradient(to right, #e6e6e6, #595959);
       }
 
       .hide {
@@ -100,6 +103,11 @@ const Home = styled(_Home)`
         transition: width 400ms ease-in;
       }
 
+      .email-icon {
+        height: 30px;
+        width: 30px;
+      }
+
       .email {
         font-size: 18px;
         font-weight: 500;
@@ -112,7 +120,7 @@ const Home = styled(_Home)`
         height: 1px;
         margin-left: 10px;
         margin-bottom: 10px;
-        background-image: linear-gradient(to left, #e6e6e6, #262626);
+        background-image: linear-gradient(to left, #e6e6e6, #595959);
       }
 
       .hide-sep-email {

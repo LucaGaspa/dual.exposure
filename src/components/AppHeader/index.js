@@ -80,7 +80,7 @@ function _AppHeader(props) {
     setLogoMargin(MIN_LOGO_MARGIN_LEFT)
     setLogoHeight(MIN_LOGO_HEIGHT)
     setSignMarginTop(0)
-    setSectionMarginTop(10)
+    setSectionMarginTop(0)
 
     setIsShrink(true)
   }
