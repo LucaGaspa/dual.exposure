@@ -6,7 +6,15 @@ const BACKGROUND_IMAGE = require("../../res/background.jpg")
 
 function _SectionButton(props) {
   return (
-    <div className={props.className} style={props.style}>
+    <div
+      className={props.className}
+      style={{
+        ...props.style,
+        backgroundImage: "url(" + BACKGROUND_IMAGE + ")",
+        backgroundPositionX: props.position.x,
+        backgroundPositionY: props.position.y
+      }}
+    >
       <Link className="link" to={props.route} onClick={props.handleClick}>
         <img className="image" src={props.image} />
       </Link>
@@ -19,8 +27,8 @@ const SectionButton = styled(_SectionButton)`
     overflow: hidden;
     display: inline-block;
     vertical-align: top;
-
-    background-image: url(${BACKGROUND_IMAGE});
+    max-width: 235px;
+    max-height: 235px;
 
     .link {
     }

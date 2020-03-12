@@ -24,7 +24,6 @@ const MIN_LOGO_HEIGHT = 50
 const MIN_LOGO_MARGIN_LEFT = 30
 
 const SECTION_MARGIN_TOP = 0
-const MAX_SECTIONS_WIDTH = 600
 
 const SMALL_SCREEN = 480
 // const MEDIUM_SCREEN = 675
@@ -56,7 +55,9 @@ function _AppHeader(props) {
   const [mousePosition, setMousePosition] = useState({ x: null, y: null })
 
   const updateMousePosition = ev => {
-    setMousePosition({ x: ev.clientX, y: ev.clientY })
+    let newX = (ev.clientX / innerWidth) * (isShrink ? 24 : 40)
+    let newY = (ev.clientY / innerHeight) * (isShrink ? 24 : 40)
+    setMousePosition({ x: newX, y: newY })
   }
 
   useEffect(() => {
@@ -133,6 +134,7 @@ function _AppHeader(props) {
           image={BACKGROUND_PORTRAITS}
           route="/portraits"
           handleClick={scaleDown}
+          position={mousePosition}
           style={{
             marginTop: sectionMarginTop,
             width: (isShrink ? "12" : "20") + "vw",
@@ -145,6 +147,7 @@ function _AppHeader(props) {
           image={BACKGROUND_LANDSCAPES}
           route="/landscapes"
           handleClick={scaleDown}
+          position={mousePosition}
           style={{
             marginTop: sectionMarginTop,
             width: (isShrink ? "12" : "20") + "vw",
@@ -156,6 +159,7 @@ function _AppHeader(props) {
           image={BACKGROUND_STILL_LIFE}
           route="/still-life"
           handleClick={scaleDown}
+          position={mousePosition}
           style={{
             marginTop: sectionMarginTop,
             width: (isShrink ? "12" : "20") + "vw",
