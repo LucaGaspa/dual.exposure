@@ -1,8 +1,6 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 
-import sign from "../../res/DE_Sign.svg"
-
 function _Home(props) {
   const [isContactUsVisible, setIsContactUsVisible] = useState(false)
 
@@ -14,9 +12,6 @@ function _Home(props) {
     <div className={props.className}>
       <div className="home-container">
         {/* <h2>Dual Exposure Studio</h2> */}
-        <div>
-          <img className="sign" src={sign} />
-        </div>
         <div className="contact-us-container">
           <div className="contact-us" onClick={onContactUs}>
             Contact Us
@@ -50,11 +45,6 @@ const Home = styled(_Home)`
         font-size: 32pt;
       }
 
-      .sign {
-        max-width: 650px;
-        align-selg: center;
-      }
-
       .contact-us-container {
         position: relative;
         display: inline-block;
@@ -75,20 +65,20 @@ const Home = styled(_Home)`
         height: 1px;
         margin-left: 20px;
         margin-bottom: 10px;
-        background-image: linear-gradient(to right, white, #262626);
+        background-image: linear-gradient(to right, #e6e6e6, #262626);
       }
 
       .hide {
         height: 100%;
         width: 70px;
-        background-color: #fff;
+        background-color: #e6e6e6;
         transition: width 400ms ease-out;
       }
 
       .show {
         height: 100%;
         width: 0px;
-        background-color: #fff;
+        background-color: #e6e6e6;
         transition: width 1000ms ease-out 400ms;
       }
 
@@ -122,19 +112,19 @@ const Home = styled(_Home)`
         height: 1px;
         margin-left: 10px;
         margin-bottom: 10px;
-        background-image: linear-gradient(to left, white, #262626);
+        background-image: linear-gradient(to left, #e6e6e6, #262626);
       }
 
       .hide-sep-email {
         height: 100%;
         width: 100%;
-        background-color: #fff;
+        background-color: #e6e6e6;
       }
 
       .show-sep-email {
         height: 100%;
         width: 290px;
-        background-color: #fff;
+        background-color: #e6e6e6;
       }
     }
   }

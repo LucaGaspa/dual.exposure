@@ -1,9 +1,9 @@
 import React from "react"
 
 import PhotoGrid from "../../components/PhotoGrid"
-import PHOTOS from "../../constants/"
+import PHOTOS from "../../constants"
 
-function Studio(props) {
+function StillLife(props) {
   return (
     <div className={props.className}>
       <PhotoGrid photos={PHOTOS} />
@@ -11,4 +11,4 @@ function Studio(props) {
   )
 }
 
-export default Studio
+export default StillLife

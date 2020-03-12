@@ -6,7 +6,7 @@ import styled from "styled-components"
 import "./App.css"
 import AppHeader from "./components/AppHeader"
 import Home from "./pages/Home"
-import Studio from "./pages/Studio"
+import StillLife from "./pages/StillLife"
 import Landscapes from "./pages/Landscapes"
 import Portraits from "./pages/Portraits"
 import { TransitionGroup, CSSTransition } from "react-transition-group"
@@ -54,9 +54,9 @@ function _App(props) {
                           <Landscapes />
                         </div>
                       </Route>
-                      <Route path="/studio">
+                      <Route path="/still-life">
                         <div className="page">
-                          <Studio />
+                          <StillLife />
                         </div>
                       </Route>
                       <Route path="/">
@@ -86,7 +86,7 @@ const App = styled(_App)`
     }
 
     .max-margin {
-      margin-top: 460px;
+      margin-top: 550px;
       transition: margin-top 1000ms ease-out;
     }
 

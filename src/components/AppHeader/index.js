@@ -2,26 +2,29 @@ import React, { useState, useEffect, useLayoutEffect } from "react"
 import { Link } from "react-router-dom"
 import { Layout } from "antd"
 import styled from "styled-components"
+import SectionButton from "./SectionButton"
 
-import logo from "../../res/DE_Logo.png"
+import logo from "../../res/DE_Logo.svg"
+import sign from "../../res/DE_Sign.svg"
 
 const { Header } = Layout
 
-const BACKGROUND_IMAGE = require("../../res/background.jpg")
 const BACKGROUND_LANDSCAPES = require("../../res/landscapes.svg")
-const BACKGROUND_STUDIO = require("../../res/studio.svg")
+const BACKGROUND_STILL_LIFE = require("../../res/still-life.svg")
 const BACKGROUND_PORTRAITS = require("../../res/portraits.svg")
 
-const LOGO_HEIGHT = 150
+const LOGO_MARGIN_TOP = 50
+
+const LOGO_HEIGHT = 250
 const LOGO_RATIO = 1.36
+
+const SIGN_RATIO = 0.123
+
 const MIN_LOGO_HEIGHT = 50
 const MIN_LOGO_MARGIN_LEFT = 30
 
-const MAX_SECTION_CONTAINER_WIDTH = 600
-const MIN_SECTION_CONTAINER_WIDTH = 400
-
-const MAX_SECTION_BOX_HEIGHT = 440
-const MIN_SECTION_BOX_HEIGHT = 150
+const SECTION_MARGIN_TOP = 0
+const MAX_SECTIONS_WIDTH = 600
 
 const SMALL_SCREEN = 480
 // const MEDIUM_SCREEN = 675
@@ -32,17 +35,22 @@ function _AppHeader(props) {
   const [innerHeight, setInnerHeight] = useState(window.innerHeight)
   const [innerWidth, setInnerWidth] = useState(window.innerWidth)
 
-  const [logoHeight, setLogoHeight] = useState(
+  const initialLogoHeight =
     innerWidth > SMALL_SCREEN ? LOGO_HEIGHT : LOGO_HEIGHT - 30
+  const [logoHeight, setLogoHeight] = useState(initialLogoHeight)
+
+  const logoInitialMargin = (innerWidth - initialLogoHeight * LOGO_RATIO) / 2
+  const [logoMargin, setLogoMargin] = useState(logoInitialMargin)
+
+  const [signMarginTop, setSignMarginTop] = useState(
+    LOGO_HEIGHT + LOGO_MARGIN_TOP
   )
 
-  const [logoMargin, setLogoMargin] = useState(
-    (innerWidth - logoHeight * LOGO_RATIO) / 2
-  )
-
-  const [sectionContainerWidth, setSectionContainerWidth] = useState(600)
-  const [sectionBoxHeight, setSectionBoxHeight] = useState(
-    MAX_SECTION_BOX_HEIGHT
+  const [sectionMarginTop, setSectionMarginTop] = useState(
+    LOGO_HEIGHT +
+      LOGO_MARGIN_TOP +
+      LOGO_HEIGHT * LOGO_RATIO * SIGN_RATIO +
+      SECTION_MARGIN_TOP
   )
 
   const [mousePosition, setMousePosition] = useState({ x: null, y: null })
@@ -65,109 +73,95 @@ function _AppHeader(props) {
     window.addEventListener("resize", updateSize)
   }, [])
 
-  function handleClick() {
+  function scaleDown() {
     props.changeState(true)
 
     setLogoMargin(MIN_LOGO_MARGIN_LEFT)
     setLogoHeight(MIN_LOGO_HEIGHT)
-    setSectionBoxHeight(MIN_SECTION_BOX_HEIGHT)
-    setSectionContainerWidth(MIN_SECTION_CONTAINER_WIDTH)
+    setSignMarginTop(0)
+    setSectionMarginTop(10)
 
-    setTimeout(() => {
-      setIsShrink(true)
-    }, 1000)
+    setIsShrink(true)
+  }
+
+  function scaleUp() {
+    props.changeState(false)
+    setLogoMargin((innerWidth - LOGO_HEIGHT * LOGO_RATIO) / 2)
+    setLogoHeight(LOGO_HEIGHT)
+    setSignMarginTop(LOGO_HEIGHT + LOGO_MARGIN_TOP)
+    setSectionMarginTop(
+      LOGO_HEIGHT +
+        LOGO_MARGIN_TOP +
+        LOGO_HEIGHT * LOGO_RATIO * SIGN_RATIO +
+        SECTION_MARGIN_TOP
+    )
+
+    setIsShrink(false)
   }
 
   return (
     <Header className={props.className}>
       <div
-        className={"logo " + (isShrink ? "logo-wait" : "logo-immediate")}
+        // styles happens immediatly, while className comes in after when isShrink is changed
+        // changing transition effect for the next click
+        className={"logo " + (!isShrink ? "logo-wait" : "logo-immediate")}
         style={{
           marginLeft: logoMargin,
           height: logoHeight,
           width: logoHeight * LOGO_RATIO
         }}
       >
-        <Link
-          to="/"
-          className="logo-link"
-          onClick={() => {
-            // LOGO CLICK
-            props.changeState(false)
-            setLogoMargin((innerWidth - LOGO_HEIGHT * LOGO_RATIO) / 2)
-            setLogoHeight(LOGO_HEIGHT)
-            setSectionBoxHeight(MAX_SECTION_BOX_HEIGHT)
-            setSectionContainerWidth(MAX_SECTION_CONTAINER_WIDTH)
-
-            setTimeout(() => {
-              setIsShrink(false)
-            }, 1000)
-          }}
-        >
+        <Link to="/" className="logo-link" onClick={scaleUp}>
           <img src={logo} alt="Logo" className="logo-img" />
         </Link>
       </div>
 
+      <div
+        className="sign-container"
+        style={{
+          opacity: isShrink ? 0 : 1,
+          marginLeft: logoInitialMargin,
+          marginTop: signMarginTop
+        }}
+      >
+        <img className="sign" src={sign} />
+      </div>
+
       <div className="sections">
-        <div
-          className="sections-container"
-          style={{ width: sectionContainerWidth }}
-        >
-          <div
-            className={"section-box " + (isShrink ? "first" : "third")}
-            style={{ height: sectionBoxHeight }}
-          >
-            <div
-              className="section-box-background"
-              style={{
-                backgroundPositionX: (mousePosition.x * 25) / innerWidth,
-                backgroundPositionY: (mousePosition.y * 25) / innerHeight
-              }}
-            ></div>
-            <div className="section-box-image studio"></div>
-            <Link
-              to="/studio"
-              className={"sections-link"}
-              onClick={handleClick}
-            ></Link>
-          </div>
-          <div
-            className="section-box second"
-            style={{ height: sectionBoxHeight }}
-          >
-            <div
-              className="section-box-background"
-              style={{
-                backgroundPositionX: (mousePosition.x * 25) / innerWidth,
-                backgroundPositionY: (mousePosition.y * 25) / innerHeight
-              }}
-            ></div>
-            <div className="section-box-image landscapes"></div>
-            <Link
-              to="/landscapes"
-              className="sections-link"
-              onClick={handleClick}
-            ></Link>
-          </div>
-          <div
-            className={"section-box " + (isShrink ? "third" : "first")}
-            style={{ height: sectionBoxHeight }}
-          >
-            <div
-              className="section-box-background"
-              style={{
-                backgroundPositionX: (mousePosition.x * 20) / innerWidth,
-                backgroundPositionY: (mousePosition.y * 100) / innerHeight
-              }}
-            ></div>
-            <div className="section-box-image portraits"></div>
-            <Link
-              to="/portraits"
-              className={"sections-link"}
-              onClick={handleClick}
-            ></Link>
-          </div>
-        </div>
+        <SectionButton
+          className={!isShrink ? "first" : "third"}
+          image={BACKGROUND_PORTRAITS}
+          route="/portraits"
+          handleClick={scaleDown}
+          style={{
+            marginTop: sectionMarginTop,
+            width: (isShrink ? "12" : "20") + "vw",
+            height: (isShrink ? "12" : "20") + "vw"
+          }}
+        />
+
+        <SectionButton
+          className="second"
+          image={BACKGROUND_LANDSCAPES}
+          route="/landscapes"
+          handleClick={scaleDown}
+          style={{
+            marginTop: sectionMarginTop,
+            width: (isShrink ? "12" : "20") + "vw",
+            height: (isShrink ? "12" : "20") + "vw"
+          }}
+        />
+        <SectionButton
+          className={!isShrink ? "third" : "first"}
+          image={BACKGROUND_STILL_LIFE}
+          route="/still-life"
+          handleClick={scaleDown}
+          style={{
+            marginTop: sectionMarginTop,
+            width: (isShrink ? "12" : "20") + "vw",
+            height: (isShrink ? "12" : "20") + "vw"
+          }}
+        />
       </div>
     </Header>
   )
@@ -178,17 +172,13 @@ const AppHeader = styled(_AppHeader)`
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: #fff;
     zindex: 1;
 
     .logo {
       position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
+      z-index: 100;
 
-      margin: 50px 0;
+      margin-top: ${LOGO_MARGIN_TOP}px;
 
       .logo-link {
       }
@@ -208,89 +198,34 @@ const AppHeader = styled(_AppHeader)`
         height ease-out 1000ms 150ms, width 1000ms ease-out 150ms;
     }
 
+    .sign-container {
+      position: absolute;
+      text-align: center;
+
+      transition: margin-top 1000ms ease-out, opacity 500ms;
+    }
+
+    .sign {
+      width: ${LOGO_HEIGHT * LOGO_RATIO}px;
+    }
+
     .sections {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      margin-left: 1px;
-
-      z-index: 100;
-
-      .sections-container {
-        display: flex;
-        flex-direction: row;
-
-        transition: width 1000ms ease-out;
-      }
-
-      .section-box {
-        width: 33.5%;
-
-        position: relative;
-
-        display: flex;
-        justify-content: center;
-
-        .section-box-background {
-          position: absolute;
-          bottom: 0;
-
-          height: 100%;
-          width: 100%;
-
-          background-image: url(${BACKGROUND_IMAGE});
-          background-size: cover;
-          background-repeat: no-repeat;
-        }
-
-        .section-box-image {
-          position: absolute;
-          bottom: 0;
-
-          height: 110%;
-          width: 110%;
-
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center bottom -2px;
-        }
-
-        .studio {
-          background-image: url(${BACKGROUND_STUDIO});
-        }
-
-        .landscapes {
-          background-image: url(${BACKGROUND_LANDSCAPES});
-        }
-
-        .portraits {
-          background-image: url(${BACKGROUND_PORTRAITS});
-        }
-      }
-
-      .sections-link {
-        position: absolute;
-        bottom: 0px;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        height: 140px;
-        width: 140px;
-        border-radius: 50%;
-      }
+      z-index: 1000;
+      text-align: center;
 
       .first {
-        transition: height 1000ms ease-out;
+        transition: margin-top 1000ms ease-out, width 1000ms ease-out,
+          height 1000ms ease-out;
       }
 
       .second {
-        transition: height 1000ms ease-out 100ms;
+        transition: margin-top 1000ms ease-out 100ms,
+          width 1000ms ease-out 100ms, height 1000ms ease-out 100ms;
       }
 
       .third {
-        transition: height 1000ms ease-out 200ms;
+        transition: margin-top 1000ms ease-out 200ms,
+          width 1000ms ease-out 200ms, height 1000ms ease-out 200ms;
       }
     }
   }
