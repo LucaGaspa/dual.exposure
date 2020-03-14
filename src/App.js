@@ -90,7 +90,7 @@ const App = styled(_App)`
     }
 
     .min-margin {
-      margin-top: 150px;
+      margin-top: 100px;
       transition: margin-top 1000ms ease-out 300ms;
     }
 

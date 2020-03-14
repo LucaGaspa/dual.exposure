@@ -2,6 +2,5 @@
 
 ## TODO
 
-- [Home] top margin based on 'vw'
-- [Header] shadow
+- [mobile] restyle for mobile
 - [Header] fix refresh on non 'Home' routes

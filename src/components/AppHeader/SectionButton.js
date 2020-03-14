@@ -30,8 +30,8 @@ const SectionButton = styled(_SectionButton)`
     max-width: 235px;
     max-height: 235px;
 
-    min-width: 135px;
-    min-height: 135px;
+    min-width: 100px;
+    min-height: 100px;
 
     .link {
     }
