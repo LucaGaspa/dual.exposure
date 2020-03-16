@@ -21,7 +21,7 @@ function _PhotoGrid(props) {
 
   return (
     <div className={props.className}>
-      <Gallery photos={photos} onClick={openLightbox} />
+      <Gallery photos={photos} onClick={openLightbox} direction={"column"} />
       <ModalGateway>
         {viewerIsOpen ? (
           <Modal onClose={closeLightbox}>

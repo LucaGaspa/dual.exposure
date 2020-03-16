@@ -1,12 +1,12 @@
 import React from "react"
 
 import PhotoGrid from "../../components/PhotoGrid"
-import PHOTOS from "../../constants/"
+import LANDSCAPE_PATHS from "../../constants/landscapes"
 
 function Landscapes(props) {
   return (
     <div className={props.className}>
-      <PhotoGrid photos={PHOTOS} />
+      <PhotoGrid photos={LANDSCAPE_PATHS} />
     </div>
   )
 }
