@@ -31,8 +31,8 @@ const SectionButton = styled(_SectionButton)`
     overflow: hidden;
     display: inline-block;
     vertical-align: top;
-    max-width: 235px;
-    max-height: 235px;
+    ${"" /* max-width: 235px; */}
+    ${"" /* max-height: 235px; */}
 
     min-width: 100px;
     min-height: 100px;

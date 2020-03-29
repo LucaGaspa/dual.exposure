@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react"
 import { Link } from "react-router-dom"
 import { Layout } from "antd"
 import styled from "styled-components"
+import { useLocation } from "react-router-dom"
 import SectionButton from "./SectionButton"
 
 import logo from "../../res/DE_Logo.svg"
@@ -15,9 +16,7 @@ const BACKGROUND_PORTRAITS = require("../../res/portraits.svg")
 
 const LOGO_MARGIN_TOP = 50
 
-const LOGO_HEIGHT = 250
 const LOGO_RATIO = 1.36
-
 const SIGN_RATIO = 0.126
 
 const MIN_LOGO_HEIGHT = 50
@@ -30,80 +29,119 @@ const SMALL_SCREEN = 480
 // const MEDIUM_SCREEN = 675
 
 function _AppHeader(props) {
-  const [isShrink, setIsShrink] = useState(false)
+  let location = useLocation()
+  const [isShrink, setIsShrink] = useState(location.pathname !== "/")
+  // take screen size
+  const innerHeight = window.innerHeight
+  const innerWidth = window.innerWidth
 
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight)
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth)
-
-  const initialLogoHeight =
-    innerWidth > SMALL_SCREEN ? LOGO_HEIGHT : LOGO_HEIGHT - 30
-  const [logoHeight, setLogoHeight] = useState(initialLogoHeight)
-
-  const logoInitialMargin = (innerWidth - initialLogoHeight * LOGO_RATIO) / 2
-  const [logoMargin, setLogoMargin] = useState(logoInitialMargin)
+  const bigHeight = (innerHeight * 2) / 3 / 2
+  // compute logo scaled up (aka. big)
+  const [logoHeight, setLogoHeight] = useState(bigHeight)
+  const initialLeftMargin = (innerWidth - bigHeight * LOGO_RATIO) / 2
+  const [logoMarginLeft, setLogoMarginLeft] = useState(initialLeftMargin)
   const [logoMarginTop, setLogoMarginTop] = useState(LOGO_MARGIN_TOP)
 
+  // compute sign margin
+  const [signWidth, setSignWidth] = useState(bigHeight * LOGO_RATIO)
   const [signMarginTop, setSignMarginTop] = useState(
-    LOGO_HEIGHT + LOGO_MARGIN_TOP
+    bigHeight + LOGO_MARGIN_TOP
   )
 
+  // compute sections (aka. buttons) marginTop
   const [sectionMarginTop, setSectionMarginTop] = useState(
-    LOGO_HEIGHT +
+    bigHeight +
       LOGO_MARGIN_TOP +
-      LOGO_HEIGHT * LOGO_RATIO * SIGN_RATIO +
+      bigHeight * LOGO_RATIO * SIGN_RATIO +
       SECTION_MARGIN_TOP
   )
+  const [sectionHeight, setSectionHeight] = useState(
+    (window.innerHeight * 2) / 3 -
+      (MIN_LOGO_MARGIN_TOP +
+        bigHeight +
+        bigHeight * LOGO_RATIO * SIGN_RATIO +
+        SECTION_MARGIN_TOP)
+  )
 
-  const [hasShadow, setHasShadow] = useState(false)
+  // compute header shadow
+  const [hasShadow, setHasShadow] = useState(location.pathname !== "/")
 
+  // mouse listener
   const [mousePosition, setMousePosition] = useState({ x: null, y: null })
 
   const updateMousePosition = ev => {
-    let newX = (ev.clientX / innerWidth) * (isShrink ? 24 : 40)
-    let newY = (ev.clientY / innerHeight) * (isShrink ? 24 : 40)
+    let newX = (ev.clientX / window.innerWidth) * (isShrink ? 24 : 40)
+    let newY = (ev.clientY / window.innerHeight) * (isShrink ? 24 : 40)
     setMousePosition({ x: newX, y: newY })
   }
 
+  // if we are not in home ScaleDown
+  // if (location.pathname !== "/") {
+  //   scaleDown()
+  // }
+
+  // window size listener
+  useLayoutEffect(() => {
+    function updateSize() {
+      if (!isShrink) {
+        scaleUp()
+      }
+    }
+    window.addEventListener("resize", updateSize)
+  }, [])
+
+  // mouse listener
   useEffect(() => {
     window.addEventListener("mousemove", updateMousePosition)
 
     return () => window.removeEventListener("mousemove", updateMousePosition)
   })
 
-  useLayoutEffect(() => {
-    function updateSize() {
-      setInnerWidth(window.innerWidth)
-      setInnerHeight(window.innerHeight)
-    }
-    window.addEventListener("resize", updateSize)
-  }, [])
-
+  // utils -> aka resize header
   function scaleDown() {
     props.changeState(true)
 
     setLogoHeight(MIN_LOGO_HEIGHT)
-    setLogoMargin(MIN_LOGO_MARGIN_LEFT)
+    setLogoMarginLeft(MIN_LOGO_MARGIN_LEFT)
     setLogoMarginTop(MIN_LOGO_MARGIN_TOP)
-    // setSignMarginTop(0)
+
     setSectionMarginTop(0)
+    setSectionHeight(100)
 
     setIsShrink(true)
-    setTimeout(() => {
-      setHasShadow(true)
-    }, 1200)
+    if (location.pathname === "/") {
+      // set shadow only if we are in home and we switch to another page
+      setTimeout(() => {
+        setHasShadow(true)
+      }, 1200)
+    }
   }
 
   function scaleUp() {
     props.changeState(false)
-    setLogoMargin((innerWidth - LOGO_HEIGHT * LOGO_RATIO) / 2)
-    setLogoHeight(LOGO_HEIGHT)
+    // reset logo values
+    let bigHeight = (window.innerHeight * 2) / 3 / 2
+    setLogoHeight(bigHeight)
+    setLogoMarginLeft((window.innerWidth - bigHeight * LOGO_RATIO) / 2)
     setLogoMarginTop(LOGO_MARGIN_TOP)
-    setSignMarginTop(LOGO_HEIGHT + LOGO_MARGIN_TOP)
+
+    // reset sign values
+    setSignWidth(bigHeight * LOGO_RATIO)
+    setSignMarginTop(bigHeight + LOGO_MARGIN_TOP)
+
+    // reset sections values
     setSectionMarginTop(
-      LOGO_HEIGHT +
+      bigHeight +
         LOGO_MARGIN_TOP +
-        LOGO_HEIGHT * LOGO_RATIO * SIGN_RATIO +
+        bigHeight * LOGO_RATIO * SIGN_RATIO +
         SECTION_MARGIN_TOP
+    )
+    setSectionHeight(
+      (window.innerHeight * 2) / 3 -
+        (MIN_LOGO_MARGIN_TOP +
+          bigHeight +
+          bigHeight * LOGO_RATIO * SIGN_RATIO +
+          SECTION_MARGIN_TOP)
     )
 
     setIsShrink(false)
@@ -119,7 +157,7 @@ function _AppHeader(props) {
           className={"logo " + (!isShrink ? "logo-wait" : "logo-immediate")}
           style={{
             marginTop: logoMarginTop,
-            marginLeft: logoMargin,
+            marginLeft: logoMarginLeft,
             height: logoHeight,
             width: logoHeight * LOGO_RATIO
           }}
@@ -135,7 +173,8 @@ function _AppHeader(props) {
           }
           style={{
             opacity: isShrink ? 0 : 1,
-            marginLeft: logoInitialMargin,
+            width: signWidth,
+            marginLeft: initialLeftMargin,
             marginTop: signMarginTop
           }}
         >
@@ -151,8 +190,8 @@ function _AppHeader(props) {
             position={mousePosition}
             style={{
               marginTop: sectionMarginTop,
-              width: isShrink ? "100px" : "20vw",
-              height: isShrink ? "100px" : "20vw"
+              width: sectionHeight,
+              height: sectionHeight
             }}
           />
 
@@ -164,8 +203,8 @@ function _AppHeader(props) {
             position={mousePosition}
             style={{
               marginTop: sectionMarginTop,
-              width: isShrink ? "100px" : "20vw",
-              height: isShrink ? "100px" : "20vw"
+              width: sectionHeight,
+              height: sectionHeight
             }}
           />
           <SectionButton
@@ -176,8 +215,8 @@ function _AppHeader(props) {
             position={mousePosition}
             style={{
               marginTop: sectionMarginTop,
-              width: isShrink ? "100px" : "20vw",
-              height: isShrink ? "100px" : "20vw"
+              width: sectionHeight,
+              height: sectionHeight
             }}
           />
         </div>
@@ -206,7 +245,7 @@ const AppHeader = styled(_AppHeader)`
       }
 
       .logo-img {
-        max-width: 100%;
+        width: 100%;
       }
     }
 
@@ -235,7 +274,7 @@ const AppHeader = styled(_AppHeader)`
     }
 
     .sign {
-      width: ${LOGO_HEIGHT * LOGO_RATIO}px;
+      ${"" /* width: ${LOGO_HEIGHT * LOGO_RATIO}px; */}
     }
 
     .sections {

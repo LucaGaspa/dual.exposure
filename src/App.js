@@ -13,6 +13,8 @@ import { TransitionGroup, CSSTransition } from "react-transition-group"
 
 const { Content } = Layout
 
+const CONTENT_ADDITIONAL_MARGIN = 60
+
 function _App(props) {
   const [isShrink, setIsShrink] = useState(false)
 
@@ -32,6 +34,11 @@ function _App(props) {
         <Layout>
           <Content
             className={"content " + (isShrink ? "min-margin" : "max-margin")}
+            style={{
+              marginTop: isShrink
+                ? 100
+                : (window.innerHeight * 2) / 3 + CONTENT_ADDITIONAL_MARGIN
+            }}
           >
             <Route
               render={({ location }) => (
@@ -85,12 +92,10 @@ const App = styled(_App)`
     }
 
     .max-margin {
-      margin-top: 600px;
       transition: margin-top 1000ms ease-out;
     }
 
     .min-margin {
-      margin-top: 100px;
       transition: margin-top 1000ms ease-out 300ms;
     }
 
