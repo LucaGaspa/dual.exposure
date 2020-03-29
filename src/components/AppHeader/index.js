@@ -2,7 +2,6 @@ import React, { useState, useEffect, useLayoutEffect } from "react"
 import { Link } from "react-router-dom"
 import { Layout } from "antd"
 import styled from "styled-components"
-import { useLocation } from "react-router-dom"
 import SectionButton from "./SectionButton"
 
 import logo from "../../res/DE_Logo.svg"
@@ -29,66 +28,26 @@ const SMALL_SCREEN = 480
 // const MEDIUM_SCREEN = 675
 
 function _AppHeader(props) {
-  let location = useLocation()
-  const [isShrink, setIsShrink] = useState(location.pathname !== "/")
-  // take screen size
-  const innerHeight = window.innerHeight
-  const innerWidth = window.innerWidth
-
-  const bigHeight = (innerHeight * 2) / 3 / 2
-  // compute logo scaled up (aka. big)
-  const [logoHeight, setLogoHeight] = useState(bigHeight)
-  const initialLeftMargin = (innerWidth - bigHeight * LOGO_RATIO) / 2
-  const [logoMarginLeft, setLogoMarginLeft] = useState(initialLeftMargin)
-  const [logoMarginTop, setLogoMarginTop] = useState(LOGO_MARGIN_TOP)
-
-  // compute sign margin
-  const [signWidth, setSignWidth] = useState(bigHeight * LOGO_RATIO)
-  const [signMarginTop, setSignMarginTop] = useState(
-    bigHeight + LOGO_MARGIN_TOP
-  )
-
-  // compute sections (aka. buttons) marginTop
-  const [sectionMarginTop, setSectionMarginTop] = useState(
-    bigHeight +
-      LOGO_MARGIN_TOP +
-      bigHeight * LOGO_RATIO * SIGN_RATIO +
-      SECTION_MARGIN_TOP
-  )
-  const [sectionHeight, setSectionHeight] = useState(
-    (window.innerHeight * 2) / 3 -
-      (MIN_LOGO_MARGIN_TOP +
-        bigHeight +
-        bigHeight * LOGO_RATIO * SIGN_RATIO +
-        SECTION_MARGIN_TOP)
-  )
-
-  // compute header shadow
-  const [hasShadow, setHasShadow] = useState(location.pathname !== "/")
+  const isShrink = props.isShrink
 
   // mouse listener
   const [mousePosition, setMousePosition] = useState({ x: null, y: null })
+
+  // window size listener
+  useLayoutEffect(() => {
+    function updateSize(size) {
+      if (!isShrink) {
+        scaleUp(size)
+      }
+    }
+    window.addEventListener("resize", updateSize)
+  }, [])
 
   const updateMousePosition = ev => {
     let newX = (ev.clientX / window.innerWidth) * (isShrink ? 24 : 40)
     let newY = (ev.clientY / window.innerHeight) * (isShrink ? 24 : 40)
     setMousePosition({ x: newX, y: newY })
   }
-
-  // if we are not in home ScaleDown
-  // if (location.pathname !== "/") {
-  //   scaleDown()
-  // }
-
-  // window size listener
-  useLayoutEffect(() => {
-    function updateSize() {
-      if (!isShrink) {
-        scaleUp()
-      }
-    }
-    window.addEventListener("resize", updateSize)
-  }, [])
 
   // mouse listener
   useEffect(() => {
@@ -97,54 +56,57 @@ function _AppHeader(props) {
     return () => window.removeEventListener("mousemove", updateMousePosition)
   })
 
-  // utils -> aka resize header
+  // compute header shadow
+  const [hasShadow, setHasShadow] = useState(isShrink)
+
+  // set small dimension
+  var logoHeight = MIN_LOGO_HEIGHT
+  var logoMarginLeft = MIN_LOGO_MARGIN_LEFT
+  var logoMarginTop = MIN_LOGO_MARGIN_TOP
+
+  var sectionMarginTop = 0
+  var sectionHeight = 100
+
+  // take screen size
+  const innerHeight = window.innerHeight
+  const innerWidth = window.innerWidth
+
+  const headerHeight = (innerHeight * 2) / 3
+  const bigLogoHeight = headerHeight / 2
+  const initialLeftMargin = (innerWidth - bigLogoHeight * LOGO_RATIO) / 2
+  if (!isShrink) {
+    // scale up
+
+    logoHeight = bigLogoHeight
+    logoMarginLeft = initialLeftMargin
+    logoMarginTop = LOGO_MARGIN_TOP
+
+    const usedHeight =
+      LOGO_MARGIN_TOP +
+      logoHeight +
+      logoHeight * LOGO_RATIO * SIGN_RATIO + // sign height
+      SECTION_MARGIN_TOP // section top margin
+
+    sectionMarginTop = usedHeight
+    sectionHeight = headerHeight - usedHeight + 50
+  }
+
+  // sign remains the same
+  var signWidth = bigLogoHeight * LOGO_RATIO
+  var signMarginTop = LOGO_MARGIN_TOP + bigLogoHeight
+
+  // utils -> aka tell App to scale header
   function scaleDown() {
     props.changeState(true)
-
-    setLogoHeight(MIN_LOGO_HEIGHT)
-    setLogoMarginLeft(MIN_LOGO_MARGIN_LEFT)
-    setLogoMarginTop(MIN_LOGO_MARGIN_TOP)
-
-    setSectionMarginTop(0)
-    setSectionHeight(100)
-
-    setIsShrink(true)
-    if (location.pathname === "/") {
-      // set shadow only if we are in home and we switch to another page
+    if (!isShrink) {
       setTimeout(() => {
         setHasShadow(true)
       }, 1200)
     }
   }
 
-  function scaleUp() {
-    props.changeState(false)
-    // reset logo values
-    let bigHeight = (window.innerHeight * 2) / 3 / 2
-    setLogoHeight(bigHeight)
-    setLogoMarginLeft((window.innerWidth - bigHeight * LOGO_RATIO) / 2)
-    setLogoMarginTop(LOGO_MARGIN_TOP)
-
-    // reset sign values
-    setSignWidth(bigHeight * LOGO_RATIO)
-    setSignMarginTop(bigHeight + LOGO_MARGIN_TOP)
-
-    // reset sections values
-    setSectionMarginTop(
-      bigHeight +
-        LOGO_MARGIN_TOP +
-        bigHeight * LOGO_RATIO * SIGN_RATIO +
-        SECTION_MARGIN_TOP
-    )
-    setSectionHeight(
-      (window.innerHeight * 2) / 3 -
-        (MIN_LOGO_MARGIN_TOP +
-          bigHeight +
-          bigHeight * LOGO_RATIO * SIGN_RATIO +
-          SECTION_MARGIN_TOP)
-    )
-
-    setIsShrink(false)
+  function scaleUp(size) {
+    props.changeState(false, size)
     setHasShadow(false)
   }
 

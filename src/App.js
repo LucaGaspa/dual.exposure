@@ -1,5 +1,10 @@
 import React, { useState } from "react"
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useLocation
+} from "react-router-dom"
 import { Layout } from "antd"
 import styled from "styled-components"
 
@@ -16,68 +21,63 @@ const { Content } = Layout
 const CONTENT_ADDITIONAL_MARGIN = 60
 
 function _App(props) {
-  const [isShrink, setIsShrink] = useState(false)
+  const navLocation = useLocation()
+  const [isShrink, setIsShrink] = useState(navLocation.pathname !== "/")
+  const [size, setSize] = useState(undefined)
 
-  function changeState(isShrinking) {
-    if (isShrinking) {
-      setIsShrink(true)
-    } else {
-      setIsShrink(false)
-    }
+  function changeState(isShrinking, size) {
+    setIsShrink(isShrinking)
+    setSize(size)
   }
 
   return (
     <div className={props.className}>
-      <Router>
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Layout>
-          <Content
-            className={"content " + (isShrink ? "min-margin" : "max-margin")}
-            style={{
-              marginTop: isShrink
-                ? 100
-                : (window.innerHeight * 2) / 3 + CONTENT_ADDITIONAL_MARGIN
-            }}
-          >
-            <Route
-              render={({ location }) => (
-                <TransitionGroup>
-                  <CSSTransition
-                    key={location.key}
-                    timeout={300}
-                    classNames="fade"
-                  >
-                    <Switch location={location}>
-                      <Route path="/portraits">
-                        <div className="page">
-                          <Portraits />
-                        </div>
-                      </Route>
-                      <Route path="/landscapes">
-                        <div className="page">
-                          <Landscapes />
-                        </div>
-                      </Route>
-                      <Route path="/still-life">
-                        <div className="page">
-                          <StillLife />
-                        </div>
-                      </Route>
-                      <Route path="/">
-                        <div className="page">
-                          <Home />
-                        </div>
-                      </Route>
-                    </Switch>
-                  </CSSTransition>
-                </TransitionGroup>
-              )}
-            />
-          </Content>
-        </Layout>
-        <AppHeader changeState={changeState} />
-      </Router>
+      <Layout>
+        <Content
+          className={"content " + (isShrink ? "min-margin" : "max-margin")}
+          style={{
+            marginTop: isShrink
+              ? 100
+              : (window.innerHeight * 2) / 3 + CONTENT_ADDITIONAL_MARGIN
+          }}
+        >
+          <Route
+            render={({ location }) => (
+              <TransitionGroup>
+                <CSSTransition
+                  key={location.key}
+                  timeout={300}
+                  classNames="fade"
+                >
+                  <Switch location={location}>
+                    <Route path="/portraits">
+                      <div className="page">
+                        <Portraits />
+                      </div>
+                    </Route>
+                    <Route path="/landscapes">
+                      <div className="page">
+                        <Landscapes />
+                      </div>
+                    </Route>
+                    <Route path="/still-life">
+                      <div className="page">
+                        <StillLife />
+                      </div>
+                    </Route>
+                    <Route path="/">
+                      <div className="page">
+                        <Home />
+                      </div>
+                    </Route>
+                  </Switch>
+                </CSSTransition>
+              </TransitionGroup>
+            )}
+          />
+        </Content>
+      </Layout>
+      <AppHeader isShrink={isShrink} changeState={changeState} />
     </div>
   )
 }
@@ -128,4 +128,16 @@ const App = styled(_App)`
     }
   }
 `
-export default App
+
+// wrapping App component to permit useLocation call
+function AppRouter() {
+  return (
+    <Router>
+      {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+      <App />
+    </Router>
+  )
+}
+
+export default AppRouter
