@@ -11,8 +11,9 @@ function _SectionButton(props) {
       style={{
         ...props.style,
         backgroundImage: "url(" + BACKGROUND_IMAGE + ")",
-        backgroundPositionX: props.position.x,
-        backgroundPositionY: props.position.y
+        backgroundPositionX: props.position.x * 2,
+        backgroundPositionY: props.position.y * 2,
+        backgroundSize: "contain"
       }}
     >
       <Link className="link" to={props.route} onClick={props.handleClick}>
