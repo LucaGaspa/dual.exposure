@@ -16,7 +16,7 @@ function _SectionButton(props) {
       }}
     >
       <Link className="link" to={props.route} onClick={props.handleClick}>
-        <img className="image" src={props.image} />
+        <img className="image" src={props.image} alt="ASSET" />
       </Link>
     </div>
   )
@@ -24,6 +24,10 @@ function _SectionButton(props) {
 
 const SectionButton = styled(_SectionButton)`
    {
+    ${"" /* removes highlight on mobiles */}
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+
     overflow: hidden;
     display: inline-block;
     vertical-align: top;

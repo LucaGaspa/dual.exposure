@@ -26,7 +26,7 @@ function _Home(props) {
               "form-container " + (isContactUsVisible ? "open" : "close")
             }
           >
-            <img className="email-icon" src={emailIcon} />
+            <img className="email-icon" src={emailIcon} alt="E" />
             <div className={"email"}>dual.exposure.studio@gmail.com</div>
             <div className={"separator-email"}>
               <div className={isContactUsVisible ? "show" : "hide"}></div>

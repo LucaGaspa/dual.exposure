@@ -68,7 +68,7 @@ function _AppHeader(props) {
     window.addEventListener("mousemove", updateMousePosition)
 
     return () => window.removeEventListener("mousemove", updateMousePosition)
-  }, [])
+  })
 
   useLayoutEffect(() => {
     function updateSize() {
@@ -125,7 +125,7 @@ function _AppHeader(props) {
           }}
         >
           <Link to="/" className="logo-link" onClick={scaleUp}>
-            <img src={logo} alt="Logo" className="logo-img" />
+            <img src={logo} className="logo-img" alt="LOGO" />
           </Link>
         </div>
 
@@ -139,7 +139,7 @@ function _AppHeader(props) {
             marginTop: signMarginTop
           }}
         >
-          <img className="sign" src={sign} />
+          <img className="sign" src={sign} alt="SIGN" />
         </div>
 
         <div className="sections">
