@@ -29,6 +29,7 @@ const SMALL_SCREEN = 480
 
 function _AppHeader(props) {
   const isShrink = props.isShrink
+  const [stateIsShrink, setStateIsShrink] = useState(props.isShrink)
 
   // mouse listener
   const [mousePosition, setMousePosition] = useState({ x: null, y: null })
@@ -36,7 +37,7 @@ function _AppHeader(props) {
   // window size listener
   useLayoutEffect(() => {
     function updateSize(size) {
-      if (!isShrink) {
+      if (!stateIsShrink) {
         scaleUp(size)
       }
     }
