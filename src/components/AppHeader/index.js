@@ -4,6 +4,7 @@ import { Layout } from "antd"
 import styled from "styled-components"
 import SectionButton from "./SectionButton"
 
+import Constants from "../../constants/"
 import logo from "../../res/DE_Logo.svg"
 import sign from "../../res/DE_Sign.svg"
 
@@ -44,7 +45,7 @@ function _AppHeader(props) {
     window.addEventListener("resize", updateSize)
   }, [])
 
-  const updateMousePosition = ev => {
+  const updateMousePosition = (ev) => {
     let newX = (ev.clientX / window.innerWidth) * (isShrink ? 24 : 40)
     let newY = (ev.clientY / window.innerHeight) * (isShrink ? 24 : 40)
     setMousePosition({ x: newX, y: newY })
@@ -96,19 +97,33 @@ function _AppHeader(props) {
   var signWidth = bigLogoHeight * LOGO_RATIO
   var signMarginTop = LOGO_MARGIN_TOP + bigLogoHeight
 
+  if (innerWidth <= Constants.MOBILE_THRESHOLD) {
+    // mobile restyle
+    logoMarginTop = 12
+    logoMarginLeft = 12
+    logoHeight = 45
+    sectionHeight = 70
+  }
+
   // utils -> aka tell App to scale header
   function scaleDown() {
-    props.changeState(true)
-    if (!isShrink) {
-      setTimeout(() => {
-        setHasShadow(true)
-      }, 1200)
+    if (innerWidth > Constants.MOBILE_THRESHOLD) {
+      // scale only if we are not in mobile
+      props.changeState(true)
+      if (!isShrink) {
+        setTimeout(() => {
+          setHasShadow(true)
+        }, 1200)
+      }
     }
   }
 
   function scaleUp(size) {
-    props.changeState(false, size)
-    setHasShadow(false)
+    if (innerWidth > Constants.MOBILE_THRESHOLD) {
+      // scale only if we are not in mobile
+      props.changeState(false, size)
+      setHasShadow(false)
+    }
   }
 
   return (
@@ -122,7 +137,7 @@ function _AppHeader(props) {
             marginTop: logoMarginTop,
             marginLeft: logoMarginLeft,
             height: logoHeight,
-            width: logoHeight * LOGO_RATIO
+            width: logoHeight * LOGO_RATIO,
           }}
         >
           <Link to="/" className="logo-link" onClick={scaleUp}>
@@ -138,7 +153,7 @@ function _AppHeader(props) {
             opacity: isShrink ? 0 : 1,
             width: signWidth,
             marginLeft: initialLeftMargin,
-            marginTop: signMarginTop
+            marginTop: signMarginTop,
           }}
         >
           <img className="sign" src={sign} alt="SIGN" />
@@ -154,7 +169,7 @@ function _AppHeader(props) {
             style={{
               marginTop: sectionMarginTop,
               width: sectionHeight,
-              height: sectionHeight
+              height: sectionHeight,
             }}
           />
 
@@ -167,7 +182,7 @@ function _AppHeader(props) {
             style={{
               marginTop: sectionMarginTop,
               width: sectionHeight,
-              height: sectionHeight
+              height: sectionHeight,
             }}
           />
           <SectionButton
@@ -179,7 +194,7 @@ function _AppHeader(props) {
             style={{
               marginTop: sectionMarginTop,
               width: sectionHeight,
-              height: sectionHeight
+              height: sectionHeight,
             }}
           />
         </div>
@@ -242,6 +257,10 @@ const AppHeader = styled(_AppHeader)`
 
     .sections {
       text-align: center;
+
+      @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
+        margin-left: 30px;
+      }
 
       .first {
         transition: margin-top 1000ms ease-out, width 1000ms ease-out,

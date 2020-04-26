@@ -2,6 +2,8 @@ import React from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 
+import Constants from "../../constants"
+
 const BACKGROUND_IMAGE = require("../../res/background.jpg")
 
 function _SectionButton(props) {
@@ -13,7 +15,7 @@ function _SectionButton(props) {
         backgroundImage: "url(" + BACKGROUND_IMAGE + ")",
         backgroundPositionX: props.position.x * 2,
         backgroundPositionY: props.position.y * 2,
-        backgroundSize: "contain"
+        backgroundSize: "contain",
       }}
     >
       <Link className="link" to={props.route} onClick={props.handleClick}>
@@ -37,6 +39,11 @@ const SectionButton = styled(_SectionButton)`
 
     min-width: 100px;
     min-height: 100px;
+
+    @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
+      min-width: 50px;
+      min-height: 50px;
+    }
 
     .link {
     }

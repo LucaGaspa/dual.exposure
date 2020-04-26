@@ -1,9 +1,5 @@
-const PHOTOS = [
-  {
-    src: require("../res/background.jpg"),
-    width: 4,
-    height: 3
-  }
-]
+const Constants = {
+  MOBILE_THRESHOLD: 575, // px size under wich we go mobile
+}
 
-export default PHOTOS
+export default Constants

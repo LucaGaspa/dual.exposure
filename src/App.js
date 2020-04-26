@@ -3,10 +3,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useLocation
+  useLocation,
 } from "react-router-dom"
 import { Layout } from "antd"
 import styled from "styled-components"
+import { TransitionGroup, CSSTransition } from "react-transition-group"
 
 import "./App.css"
 import AppHeader from "./components/AppHeader"
@@ -14,7 +15,7 @@ import Home from "./pages/Home"
 import StillLife from "./pages/StillLife"
 import Landscapes from "./pages/Landscapes"
 import Portraits from "./pages/Portraits"
-import { TransitionGroup, CSSTransition } from "react-transition-group"
+import Constants from "./constants/"
 
 const { Content } = Layout
 
@@ -22,12 +23,23 @@ const CONTENT_ADDITIONAL_MARGIN = 60
 
 function _App(props) {
   const navLocation = useLocation()
-  const [isShrink, setIsShrink] = useState(navLocation.pathname !== "/")
+  const [isShrink, setIsShrink] = useState(
+    navLocation.pathname !== "/" ||
+      window.innerWidth <= Constants.MOBILE_THRESHOLD
+  )
   const [size, setSize] = useState(undefined)
 
   function changeState(isShrinking, size) {
     setIsShrink(isShrinking)
     setSize(size)
+  }
+
+  let contentMarginTop = 100
+  if (!isShrink) {
+    contentMarginTop = (window.innerHeight * 2) / 3 + CONTENT_ADDITIONAL_MARGIN
+  }
+  if (window.innerWidth <= Constants.MOBILE_THRESHOLD) {
+    contentMarginTop = 70
   }
 
   return (
@@ -36,9 +48,7 @@ function _App(props) {
         <Content
           className={"content " + (isShrink ? "min-margin" : "max-margin")}
           style={{
-            marginTop: isShrink
-              ? 100
-              : (window.innerHeight * 2) / 3 + CONTENT_ADDITIONAL_MARGIN
+            marginTop: contentMarginTop,
           }}
         >
           <Route

@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 
+import Constants from "../../constants"
 import emailIcon from "../../res/email-icon.svg"
 
 function _Home(props) {
@@ -53,12 +54,20 @@ const Home = styled(_Home)`
         display: inline-block;
         width: 500px;
         margin-top: 20px;
+
+        @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
+          width: 100%;
+        }
       }
 
       .contact-us {
         cursor: pointer;
         margin-top: 3px;
         font-weight: 500;
+
+        @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
+          margin-top: 100px;
+        }
       }
 
       .separator {
@@ -91,6 +100,15 @@ const Home = styled(_Home)`
         position: absolute;
         left: 310px;
         top: 0;
+
+        @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
+          margin-left: auto;
+          margin-right: auto;
+          left: 0;
+          right: 0;
+          top: 150px;
+          text-align: center;
+        }
       }
 
       .open {

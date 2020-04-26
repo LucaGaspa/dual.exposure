@@ -2,5 +2,6 @@
 
 ## TODO
 
-- [mobile] restyle for mobile
-- [Header] fix refresh on non 'Home' routes
+- [Home] initial loader
+- [Home] mail icon
+- [Images] more photos and watermark
