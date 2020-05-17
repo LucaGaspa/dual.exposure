@@ -3,36 +3,17 @@ import styled from "styled-components"
 
 import Constants from "../../constants"
 import emailIcon from "../../res/email-icon.svg"
+import instagramIcon from "../../res/instagram.png"
 
 function _Home(props) {
-  const [isContactUsVisible, setIsContactUsVisible] = useState(false)
-
-  function onContactUs() {
-    setIsContactUsVisible(!isContactUsVisible)
-  }
-
   return (
     <div className={props.className}>
       <div className="home-container">
-        {/* <h2>Dual Exposure Studio</h2> */}
-        <div className="contact-us-container">
-          <div className="contact-us" onClick={onContactUs}>
-            Contact Us
-          </div>
-          <div className={"separator"}>
-            <div className={isContactUsVisible ? "hide" : "show"}></div>
-          </div>
-          <div
-            className={
-              "form-container " + (isContactUsVisible ? "open" : "close")
-            }
-          >
-            <img className="email-icon" src={emailIcon} alt="E" />
-            <div className={"email"}>dual.exposure.studio@gmail.com</div>
-            <div className={"separator-email"}>
-              <div className={isContactUsVisible ? "show" : "hide"}></div>
-            </div>
-          </div>
+        <div className="contact-us">
+          <img className="email-icon" src={emailIcon} alt="E" />
+          <div className="contact-text">dual.exposure.studio@gmail.com</div>
+          <img className="instagram-icon" src={instagramIcon} alt="E" />
+          <div className="contact-text">@dual.exposure</div>
         </div>
       </div>
     </div>
@@ -42,115 +23,51 @@ function _Home(props) {
 const Home = styled(_Home)`
    {
     .home-container {
-      text-align: center;
-
-      h2 {
-        font-weight: 400;
-        font-size: 32pt;
-      }
-
-      .contact-us-container {
-        position: relative;
-        display: inline-block;
-        width: 500px;
-        margin-top: 20px;
-
-        @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
-          width: 100%;
-        }
-      }
-
       .contact-us {
         cursor: pointer;
-        margin-top: 3px;
-        font-weight: 500;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 50px;
 
         @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
           margin-top: 100px;
+
+          flex-direction: column;
         }
-      }
-
-      .separator {
-        display: inline-block;
-        align-self: center;
-        width: 70px;
-        height: 1px;
-        margin-left: 20px;
-        margin-bottom: 10px;
-        background-image: linear-gradient(to right, #e6e6e6, #595959);
-      }
-
-      .hide {
-        height: 100%;
-        width: 70px;
-        background-color: #e6e6e6;
-        transition: width 400ms ease-out;
-      }
-
-      .show {
-        height: 100%;
-        width: 0px;
-        background-color: #e6e6e6;
-        transition: width 1000ms ease-out 400ms;
-      }
-
-      .form-container {
-        overflow: hidden;
-        display: inline-block;
-        position: absolute;
-        left: 310px;
-        top: 0;
-
-        @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
-          margin-left: auto;
-          margin-right: auto;
-          left: 0;
-          right: 0;
-          top: 150px;
-          text-align: center;
-        }
-      }
-
-      .open {
-        width: 290px;
-        transition: width 1000ms ease-out 400ms;
-      }
-
-      .close {
-        width: 0px;
-        transition: width 400ms ease-in;
       }
 
       .email-icon {
         height: 30px;
         width: 30px;
+
+        @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
+          margin-top: 50px;
+        }
       }
 
-      .email {
+      .contact-text {
         font-size: 18px;
         font-weight: 500;
+        margin-left: 5px;
+
+        @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
+          margin-top: 5px;
+          margin-left: 0px;
+        }
       }
 
-      .separator-email {
-        display: inline-block;
-        align-self: center;
-        width: 290px;
-        height: 1px;
-        margin-left: 10px;
-        margin-bottom: 10px;
-        background-image: linear-gradient(to left, #e6e6e6, #595959);
-      }
+      .instagram-icon {
+        height: 30px;
+        width: 30px;
+        margin-left: 100px;
 
-      .hide-sep-email {
-        height: 100%;
-        width: 100%;
-        background-color: #e6e6e6;
-      }
-
-      .show-sep-email {
-        height: 100%;
-        width: 290px;
-        background-color: #e6e6e6;
+        @media only screen and (max-width: ${Constants.MOBILE_THRESHOLD}px) {
+          margin-top: 50px;
+          margin-left: 0px;
+        }
       }
     }
   }

@@ -11,7 +11,7 @@ import sign from "../../res/DE_Sign.svg"
 const { Header } = Layout
 
 const BACKGROUND_LANDSCAPES = require("../../res/landscapes.svg")
-const BACKGROUND_STILL_LIFE = require("../../res/still-life.svg")
+const BACKGROUND_STILL_LIFE = require("../../res/commercial.svg")
 const BACKGROUND_PORTRAITS = require("../../res/portraits.svg")
 
 const LOGO_MARGIN_TOP = 50
@@ -74,28 +74,26 @@ function _AppHeader(props) {
   const innerWidth = window.innerWidth
 
   const headerHeight = (innerHeight * 2) / 3
-  const bigLogoHeight = headerHeight / 2
-  const initialLeftMargin = (innerWidth - bigLogoHeight * LOGO_RATIO) / 2
+  const oneThirdHeight = headerHeight / 3
+  const oneSixthHeight = headerHeight / 6
+  const initialLeftMargin = (innerWidth - oneThirdHeight * LOGO_RATIO) / 2
+
+  // sign remains the same, no need to scale up
+  var signWidth = oneThirdHeight * LOGO_RATIO
+  var signMarginTop = oneThirdHeight / 2 + oneThirdHeight
+
   if (!isShrink) {
     // scale up
-
-    logoHeight = bigLogoHeight
+    logoMarginTop = oneSixthHeight
+    logoHeight = oneThirdHeight
     logoMarginLeft = initialLeftMargin
-    logoMarginTop = LOGO_MARGIN_TOP
 
-    const usedHeight =
-      LOGO_MARGIN_TOP +
-      logoHeight +
-      logoHeight * LOGO_RATIO * SIGN_RATIO + // sign height
-      SECTION_MARGIN_TOP // section top margin
+    const signHeight = logoHeight * LOGO_RATIO * SIGN_RATIO
+    const usedHeight = oneSixthHeight + logoHeight + signHeight
 
-    sectionMarginTop = usedHeight
-    sectionHeight = headerHeight - usedHeight + 50
+    sectionMarginTop = usedHeight + oneSixthHeight - signHeight
+    sectionHeight = oneThirdHeight
   }
-
-  // sign remains the same
-  var signWidth = bigLogoHeight * LOGO_RATIO
-  var signMarginTop = LOGO_MARGIN_TOP + bigLogoHeight
 
   if (innerWidth <= Constants.MOBILE_THRESHOLD) {
     // mobile restyle
@@ -188,7 +186,7 @@ function _AppHeader(props) {
           <SectionButton
             className={!isShrink ? "third" : "first"}
             image={BACKGROUND_STILL_LIFE}
-            route="/still-life"
+            route="/commercial"
             handleClick={scaleDown}
             position={mousePosition}
             style={{
@@ -208,7 +206,7 @@ const AppHeader = styled(_AppHeader)`
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: #e6e6e6;
+    background-color: #fafafa;
 
     .shadow {
       -webkit-box-shadow: 10px 10px 42px -17px rgba(0, 0, 0, 0.75);

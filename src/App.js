@@ -19,8 +19,6 @@ import Constants from "./constants/"
 
 const { Content } = Layout
 
-const CONTENT_ADDITIONAL_MARGIN = 60
-
 function _App(props) {
   const navLocation = useLocation()
   const [isShrink, setIsShrink] = useState(
@@ -36,7 +34,9 @@ function _App(props) {
 
   let contentMarginTop = 100
   if (!isShrink) {
-    contentMarginTop = (window.innerHeight * 2) / 3 + CONTENT_ADDITIONAL_MARGIN
+    const oneThirdWindow = window.innerHeight / 3
+    const headerHeight = oneThirdWindow * 2
+    contentMarginTop = headerHeight + oneThirdWindow / 2
   }
   if (window.innerWidth <= Constants.MOBILE_THRESHOLD) {
     contentMarginTop = 70
@@ -70,7 +70,7 @@ function _App(props) {
                         <Landscapes />
                       </div>
                     </Route>
-                    <Route path="/still-life">
+                    <Route path="/commercial">
                       <div className="page">
                         <StillLife />
                       </div>
@@ -97,8 +97,6 @@ const App = styled(_App)`
     min-width: 375px;
 
     .content {
-      position: relative;
-      height: 100%;
     }
 
     .max-margin {
@@ -110,10 +108,6 @@ const App = styled(_App)`
     }
 
     .page {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
     }
 
     /* simple - enter transition 300ms, exit 150ms */
